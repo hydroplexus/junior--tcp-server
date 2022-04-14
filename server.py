@@ -26,6 +26,7 @@ class Server(socketserver.TCPServer):
                     
         def check(self):
             list = self.__response.split(b'\r')
+            print(list)
             
         def convert(self, data):
             pass
