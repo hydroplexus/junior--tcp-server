@@ -11,7 +11,7 @@ class JData():
         
     def convert(self):
         pass
-    
+
     
 class JServer(socketserver.TCPServer):
     
