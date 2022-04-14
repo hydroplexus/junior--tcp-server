@@ -29,7 +29,7 @@ class JServer(socketserver.TCPServer):
             while True:
                 incom = self.request.recv(24)
                 if not data: break
-                check = __response.check(data)
+                check = self.__response.check(data)
                 match check[0]:
                     case none: break
                     case
@@ -40,7 +40,8 @@ class JServer(socketserver.TCPServer):
             
     def __init__(self, host='0.0.0.0', port=5000):
         try:
-            super().__init__((host, port), self.HRecieve)
+            #super().__init__((host, port), self.HRecieve)
+            self.server_bind((host, port), self.HRecieve)
         except Exception as exception:
             print(exception)
         finally:
