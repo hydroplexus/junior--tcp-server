@@ -3,7 +3,7 @@
 import socketserver
     
 class JData():
-    def __init__(self, data='')
+    def __init__(self, data=''):
         self.__data = data
     
     def check(data):
@@ -20,7 +20,7 @@ class JServer(socketserver.TCPServer):
         
         def handle(self):
             self.__data = self.request.recv(1024).strip()
-            if (self.__data.check)
+            if (self.__data.check):
                 print("Data is alright")
             
             
@@ -31,9 +31,9 @@ class JServer(socketserver.TCPServer):
         try:
             self.server_bind((host, port), self.__reciever)
         except Exception as exception:
-            print(exeption)
+            print(exception)
         finally:
-            print('Server succesfully started at {}:{}'.format(host, port)
+            print('Server succesfully started at {}:{}'.format(host, port))
           
           
 def main() -> None:
