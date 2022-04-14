@@ -3,36 +3,44 @@
 import socketserver
 import re
     
-class JData():
+class JResponse():
     __pattern = re.compile('[0-9]')
     
     def __init__(self, data=''):
-        self.value = data
+        self.__data = data
     
-    def check(self):
-        return self.__pattern.fullmatch(self.__value)
+    def check(self, data):
+        error = None
+        text = None
+        self.__data += data
+        return (error, text)
+        
         
     def convert(self):
         pass
-
+    
     
 class JServer(socketserver.TCPServer):
     
     class HRecieve(socketserver.BaseRequestHandler):
-        __data = JData()
-        
+        __response = JResponse()
         def handle(self):
-            self.__data = self.request.recv(1024).strip()
-            if (self.__data.check):
-                print("Data is alright")
+            data = '0'
+            while True:
+                incom = self.request.recv(24)
+                if not data: break
+                check = __response.check(data)
+                match check[0]:
+                    case none: break
+                    case
+                
+                print(b'\r\n' in data)
+                #self.request.send()
             
             
-    __reciever = HRecieve()
-    
     def __init__(self, host='0.0.0.0', port=5000):
-        super.__init__()
         try:
-            self.server_bind((host, port), self.__reciever)
+            super().__init__((host, port), self.HRecieve)
         except Exception as exception:
             print(exception)
         finally:
@@ -42,6 +50,10 @@ class JServer(socketserver.TCPServer):
 def main() -> None:
     host = '0.0.0.0'
     port = 5000
+    log_dir = 'log'
+    log_err = 'err.log'
+    log_result = 'result.log'
+    
     server = JServer(host, port)
     server.serve_forever()
      
