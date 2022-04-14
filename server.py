@@ -4,11 +4,13 @@ import socketserver
 import re
     
 class JData():
-    def __init__(self, data=''):
-        self.__data = data
+    __pattern = re.compile('[0-9]')
     
-    def check(data):
-        return True
+    def __init__(self, data=''):
+        self.value = data
+    
+    def check(self):
+        return self.__pattern.fullmatch(self.__value)
         
     def convert(self):
         pass
