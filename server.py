@@ -3,59 +3,48 @@
 import socketserver
 import re
     
-class JResponse():
-    __pattern = re.compile('[0-9]')
-    
-    def __init__(self, data=''):
-        self.__data = data
-    
-    def check(self, data):
-        error = None
-        text = None
-        self.__data += data
-        return (error, text)
-        
-        
-    def convert(self):
-        pass
-    
-    
-class JServer(socketserver.TCPServer):
+class Server(socketserver.TCPServer):
     
     class HRecieve(socketserver.BaseRequestHandler):
-        __response = JResponse()
+        log_dir = 'log/'
+        log_err = 'err.log'
+        log_result = 'result.log'
+        __pattern = re.compile('[0-9]')
+        __response = b''
+        
         def handle(self):
-            data = '0'
+            accum = b''
             while True:
-                incom = self.request.recv(24)
+                data = self.request.recv(1024)
                 if not data: break
-                check = self.__response.check(data)
-                match check[0]:
-                    case none: break
-                    case
-                
-                print(b'\r\n' in data)
-                #self.request.send()
+                accum += data
+                if accum.find(b'\r'):
+                    self.__response += accum
+                    print (self.__response)
+                    accum = b''
+                    self.check()
+                    
+        def check(self):
+            list = self.__response.split(b'\r')
+            
+        def convert(self, data):
+            pass
+        
+        def logger(self):
+            pass
             
             
     def __init__(self, host='0.0.0.0', port=5000):
         try:
-            #super().__init__((host, port), self.HRecieve)
-            self.server_bind((host, port), self.HRecieve)
+            super().__init__((host, port), self.HRecieve)
         except Exception as exception:
             print(exception)
         finally:
             print('Server succesfully started at {}:{}'.format(host, port))
-          
+
           
 def main() -> None:
-    host = '0.0.0.0'
-    port = 5000
-    log_dir = 'log'
-    log_err = 'err.log'
-    log_result = 'result.log'
-    
-    server = JServer(host, port)
+    server = Server()
     server.serve_forever()
      
         
