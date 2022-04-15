@@ -5,41 +5,46 @@ import sys
 from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtCore import QProcess, QFile, QTextStream
 
-from uic.uiClient import Ui_Form
+from uic.uiClient import Ui_JuniorTcpServer
 #TODO: change server instance from QProcess/server.py to QThread/Server::
 #from server import Server
 
 class MainWidget(QWidget):
     
-    logFile = QFile('./results.log')
-    logStream = QTextStream()
-    srvFile = './server.py'
+    SRV_ADDRESS_DEFAULT = '0.0.0.0'
+    SRV_PORT_DEFAULT = 5000
+    LOG_FILE_NAME = './results.log'
+    SRV_FILE_NAME = './server.py'
+    
     srvProcess = QProcess()
+    srvAddress = ''
+    srvPort = None
     srvIsCustom = False
     srvIsRunning = False
-    
-    #SIGNALS
+    logStream = QTextStream()
     
     def __init__(self):
         super(MainWidget, self).__init__()
-        self.ui = Ui_Form()
+        self.ui = Ui_JuniorTcpServer()
         self.ui.setupUi(self)
         self.setUiLogic()
         self.setConnects()
         
     def setUiLogic(self):
-        self.logFile.open(QFile.ReadOnly)
-        self.logStream.setDevice(self.logFile)
+        logFile = QFile(self.LOG_FILE_NAME)
+        logFile.open(QFile.ReadOnly)
+        self.logStream.setDevice(logFile)
         self.updateLog()
         self.ui.grpCustom.setChecked(self.srvIsCustom)
         
         self.srvProcess.setProgram('python3')
-        self.srvProcess.setArguments({self.srvFile})
+        self.srvProcess.setArguments({self.SRV_FILE_NAME})
     
     def setConnects(self):
         self.ui.grpCustom.toggled.connect(self.slotCustomToggled)
         self.ui.btnSrvStart.clicked.connect(self.slotStartSrv)
         self.ui.btnSrvStop.clicked.connect(self.slotStopSrv)
+        self.ui.btnConnectTelnet.clicked.connect(self.slotConnectTelnet)
 
     def updateLog(self):
         while not self.logStream.atEnd():
@@ -47,10 +52,9 @@ class MainWidget(QWidget):
             
     def srvToggle(self):
         self.srvIsRunning = False if self.srvProcess.state() == 0 else True
-        print(self.srvIsRunning)
         self.ui.grpCustom.setEnabled(not self.srvIsRunning)
         self.ui.btnSrvStop.setEnabled(self.srvIsRunning)
-        self.ui.btnClientConnect.setEnabled(self.srvIsRunning)
+        self.ui.btnConnectTelnet.setEnabled(self.srvIsRunning)
         self.ui.btnSrvStart.setEnabled(not self.srvIsRunning)
      
     def closeEvent(self, event):
@@ -80,11 +84,14 @@ class MainWidget(QWidget):
         #FIXME: wait for srv process finishes correctly
         self.srvProcess.terminate()
         self.srvToggle()
-            
+    
+    def slotConnectTelnet(self):
+        pass       
        
 def main():
     app = QApplication(sys.argv)
     widget = MainWidget()
+    widget.setWindowTitle('JuniorTcpServer -- shakhov-vy')
     widget.show()
     sys.exit(app.exec())
 
