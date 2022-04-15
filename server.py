@@ -5,8 +5,9 @@ import argparse
 import socketserver
 import re
     
+#TODO: make server class more integrated to os
 class Server(socketserver.TCPServer):
-#TODO: make server class more integrated to os    
+    #TODO: move Server::HRecieve to external file
     class HRecieve(socketserver.BaseRequestHandler):
         def setup(self):
             self.__pattern = re.compile(r'(?P<num>\d{4}) (?P<chn>C\d) (?P<at>\d{2}:\d{2}:\d{2}.\d)\d{2} (?P<grp>\d{2})$')
@@ -76,7 +77,7 @@ def main():
               'Fallback to default ' + str(args.port))
     if not re.match('^(([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)\.){3}([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)$', args.address):
         args.address = parser.get_default('address')
-        print('Address must be in format XXX.XXX.XXX.XXX, where X is digest from 0 to 9\r\n'
+        print('Address must be in format X.X.X.X, where X must be in range 0..255\r\n'
               'Fallback to default 0.0.0.0')
     server = Server(args.address, args.port)
     server.serve_forever()
