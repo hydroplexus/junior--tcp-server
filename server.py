@@ -29,9 +29,7 @@ class Server(socketserver.TCPServer):
             while True:
                 data = self.request.recv(1024)
                 if not data: break
-                #FIXME: per character data recieving from windows telnet client 
-                #Эта странность от того, что клиент telnet на Windows отправляет символы по одному по мере набора
-                #махинации с его настройками не помогли
+                #FIXME: strange with per character data recieving from windows telnet client 
                 accum += data
                 if accum.find(b'\r'):
                     self.__response += accum
