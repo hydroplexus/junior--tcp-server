@@ -65,7 +65,7 @@ class MainWidget(QWidget):
         #FIXME: prevent server start with incorrect arguments through fallback them to defaults
         try:
             if self.srvIsCustom:
-            #FIXME: set default values lineAddress/linePort after clear fields
+            #FIXME: set default values lineAddress/linePort after filds clearing
                 self.srvProcess.setArguments({'--address', self.ui.lineAddress.text()})
                 self.srvProcess.setArguments({'--port', self.ui.linePort.text.toint()})
             self.srvProcess.start()
