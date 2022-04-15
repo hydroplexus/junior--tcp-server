@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ui-client.ui'
+## Form generated from reading UI file 'uiClient.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.4
 ##
@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QGridLayout,
-    QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-    QPlainTextEdit, QPushButton, QSizePolicy, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QGroupBox,
+    QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit,
+    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -46,6 +45,8 @@ class Ui_Form(object):
 
         self.teLog = QPlainTextEdit(Form)
         self.teLog.setObjectName(u"teLog")
+        self.teLog.setEnabled(True)
+        self.teLog.setFrameShape(QFrame.Box)
         self.teLog.setReadOnly(True)
 
         self.verticalLayout_3.addWidget(self.teLog)
@@ -66,6 +67,7 @@ class Ui_Form(object):
 
         self.teStdOut = QPlainTextEdit(Form)
         self.teStdOut.setObjectName(u"teStdOut")
+        self.teStdOut.setFrameShape(QFrame.Box)
         self.teStdOut.setReadOnly(True)
 
         self.verticalLayout_2.addWidget(self.teStdOut)
@@ -76,15 +78,12 @@ class Ui_Form(object):
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.chkCustom = QCheckBox(Form)
-        self.chkCustom.setObjectName(u"chkCustom")
-
-        self.verticalLayout.addWidget(self.chkCustom)
-
         self.grpCustom = QGroupBox(Form)
         self.grpCustom.setObjectName(u"grpCustom")
-        self.grpCustom.setEnabled(False)
+        self.grpCustom.setEnabled(True)
         self.grpCustom.setFlat(True)
+        self.grpCustom.setCheckable(True)
+        self.grpCustom.setChecked(False)
         self.gridLayout_2 = QGridLayout(self.grpCustom)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setHorizontalSpacing(0)
@@ -97,6 +96,7 @@ class Ui_Form(object):
 
         self.lineAddress = QLineEdit(self.grpCustom)
         self.lineAddress.setObjectName(u"lineAddress")
+        self.lineAddress.setEnabled(False)
 
         self.gridLayout_2.addWidget(self.lineAddress, 0, 0, 1, 1)
 
@@ -105,18 +105,23 @@ class Ui_Form(object):
 
         self.btnSrvStart = QPushButton(Form)
         self.btnSrvStart.setObjectName(u"btnSrvStart")
+        self.btnSrvStart.setFlat(False)
 
         self.verticalLayout.addWidget(self.btnSrvStart)
 
         self.btnSrvStop = QPushButton(Form)
         self.btnSrvStop.setObjectName(u"btnSrvStop")
+        self.btnSrvStop.setEnabled(False)
+        self.btnSrvStop.setFlat(False)
 
         self.verticalLayout.addWidget(self.btnSrvStop)
 
-        self.btnConnect = QPushButton(Form)
-        self.btnConnect.setObjectName(u"btnConnect")
+        self.btnClientConnect = QPushButton(Form)
+        self.btnClientConnect.setObjectName(u"btnClientConnect")
+        self.btnClientConnect.setEnabled(False)
+        self.btnClientConnect.setFlat(False)
 
-        self.verticalLayout.addWidget(self.btnConnect)
+        self.verticalLayout.addWidget(self.btnClientConnect)
 
         self.line = QFrame(Form)
         self.line.setObjectName(u"line")
@@ -127,6 +132,7 @@ class Ui_Form(object):
 
         self.labelClient = QLabel(Form)
         self.labelClient.setObjectName(u"labelClient")
+        self.labelClient.setEnabled(False)
         self.labelClient.setFont(font)
         self.labelClient.setAutoFillBackground(True)
         self.labelClient.setScaledContents(False)
@@ -136,6 +142,8 @@ class Ui_Form(object):
 
         self.teClient = QPlainTextEdit(Form)
         self.teClient.setObjectName(u"teClient")
+        self.teClient.setEnabled(False)
+        self.teClient.setFrameShape(QFrame.Box)
 
         self.verticalLayout.addWidget(self.teClient)
 
@@ -155,14 +163,13 @@ class Ui_Form(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.labelLog.setText(QCoreApplication.translate("Form", u"results.log", None))
         self.labelStdOut.setText(QCoreApplication.translate("Form", u"server stdout", None))
-        self.chkCustom.setText(QCoreApplication.translate("Form", u"Use custom server params", None))
-        self.grpCustom.setTitle("")
+        self.grpCustom.setTitle(QCoreApplication.translate("Form", u"Use custom server params", None))
         self.linePort.setPlaceholderText(QCoreApplication.translate("Form", u"server port (:5000)", None))
         self.lineAddress.setInputMask("")
         self.lineAddress.setPlaceholderText(QCoreApplication.translate("Form", u"server address (0.0.0.0)", None))
         self.btnSrvStart.setText(QCoreApplication.translate("Form", u"Start server", None))
         self.btnSrvStop.setText(QCoreApplication.translate("Form", u"Stop server", None))
-        self.btnConnect.setText(QCoreApplication.translate("Form", u"Connect client", None))
+        self.btnClientConnect.setText(QCoreApplication.translate("Form", u"Connect client", None))
         self.labelClient.setText(QCoreApplication.translate("Form", u"client input", None))
     # retranslateUi
 

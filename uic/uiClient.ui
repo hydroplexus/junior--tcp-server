@@ -43,6 +43,12 @@
        </item>
        <item>
         <widget class="QPlainTextEdit" name="teLog">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -77,6 +83,9 @@
        </item>
        <item>
         <widget class="QPlainTextEdit" name="teStdOut">
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -90,22 +99,21 @@
         <number>5</number>
        </property>
        <item>
-        <widget class="QCheckBox" name="chkCustom">
-         <property name="text">
-          <string>Use custom server params</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QGroupBox" name="grpCustom">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="title">
-          <string/>
+          <string>Use custom server params</string>
          </property>
          <property name="flat">
           <bool>true</bool>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <property name="leftMargin">
@@ -135,6 +143,9 @@
           </item>
           <item row="0" column="0">
            <widget class="QLineEdit" name="lineAddress">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="inputMask">
              <string/>
             </property>
@@ -151,19 +162,34 @@
          <property name="text">
           <string>Start server</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnSrvStop">
-         <property name="text">
-          <string>Stop server</string>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btnConnect">
+        <widget class="QPushButton" name="btnSrvStop">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Stop server</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnClientConnect">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Connect client</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -176,6 +202,9 @@
        </item>
        <item>
         <widget class="QLabel" name="labelClient">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="font">
           <font>
            <pointsize>11</pointsize>
@@ -198,7 +227,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="teClient"/>
+        <widget class="QPlainTextEdit" name="teClient">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
