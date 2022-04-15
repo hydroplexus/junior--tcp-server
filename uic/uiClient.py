@@ -17,20 +17,21 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QGroupBox,
     QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit,
-    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
+    QWidget)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(640, 480)
-        self.verticalLayout_5 = QVBoxLayout(Form)
+class Ui_JuniorTcpServer(object):
+    def setupUi(self, JuniorTcpServer):
+        if not JuniorTcpServer.objectName():
+            JuniorTcpServer.setObjectName(u"JuniorTcpServer")
+        JuniorTcpServer.resize(640, 480)
+        self.verticalLayout_5 = QVBoxLayout(JuniorTcpServer)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.labelLog = QLabel(Form)
+        self.labelLog = QLabel(JuniorTcpServer)
         self.labelLog.setObjectName(u"labelLog")
         font = QFont()
         font.setPointSize(11)
@@ -43,7 +44,7 @@ class Ui_Form(object):
 
         self.verticalLayout_3.addWidget(self.labelLog)
 
-        self.teLog = QPlainTextEdit(Form)
+        self.teLog = QPlainTextEdit(JuniorTcpServer)
         self.teLog.setObjectName(u"teLog")
         self.teLog.setEnabled(True)
         self.teLog.setFrameShape(QFrame.Box)
@@ -56,7 +57,7 @@ class Ui_Form(object):
 
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.labelStdOut = QLabel(Form)
+        self.labelStdOut = QLabel(JuniorTcpServer)
         self.labelStdOut.setObjectName(u"labelStdOut")
         self.labelStdOut.setFont(font)
         self.labelStdOut.setAutoFillBackground(True)
@@ -65,7 +66,7 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.labelStdOut)
 
-        self.teStdOut = QPlainTextEdit(Form)
+        self.teStdOut = QPlainTextEdit(JuniorTcpServer)
         self.teStdOut.setObjectName(u"teStdOut")
         self.teStdOut.setFrameShape(QFrame.Box)
         self.teStdOut.setReadOnly(True)
@@ -78,9 +79,10 @@ class Ui_Form(object):
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.grpCustom = QGroupBox(Form)
+        self.grpCustom = QGroupBox(JuniorTcpServer)
         self.grpCustom.setObjectName(u"grpCustom")
         self.grpCustom.setEnabled(True)
+        self.grpCustom.setStyleSheet(u"")
         self.grpCustom.setFlat(True)
         self.grpCustom.setCheckable(True)
         self.grpCustom.setChecked(False)
@@ -104,49 +106,36 @@ class Ui_Form(object):
 
         self.verticalLayout.addWidget(self.grpCustom)
 
-        self.btnSrvStart = QPushButton(Form)
+        self.btnSrvStart = QPushButton(JuniorTcpServer)
         self.btnSrvStart.setObjectName(u"btnSrvStart")
         self.btnSrvStart.setFlat(False)
 
         self.verticalLayout.addWidget(self.btnSrvStart)
 
-        self.btnSrvStop = QPushButton(Form)
+        self.btnSrvStop = QPushButton(JuniorTcpServer)
         self.btnSrvStop.setObjectName(u"btnSrvStop")
         self.btnSrvStop.setEnabled(False)
         self.btnSrvStop.setFlat(False)
 
         self.verticalLayout.addWidget(self.btnSrvStop)
 
-        self.btnClientConnect = QPushButton(Form)
-        self.btnClientConnect.setObjectName(u"btnClientConnect")
-        self.btnClientConnect.setEnabled(False)
-        self.btnClientConnect.setFlat(False)
-
-        self.verticalLayout.addWidget(self.btnClientConnect)
-
-        self.line = QFrame(Form)
+        self.line = QFrame(JuniorTcpServer)
         self.line.setObjectName(u"line")
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
 
         self.verticalLayout.addWidget(self.line)
 
-        self.labelClient = QLabel(Form)
-        self.labelClient.setObjectName(u"labelClient")
-        self.labelClient.setEnabled(False)
-        self.labelClient.setFont(font)
-        self.labelClient.setAutoFillBackground(True)
-        self.labelClient.setScaledContents(False)
-        self.labelClient.setAlignment(Qt.AlignCenter)
+        self.btnConnectTelnet = QPushButton(JuniorTcpServer)
+        self.btnConnectTelnet.setObjectName(u"btnConnectTelnet")
+        self.btnConnectTelnet.setEnabled(False)
+        self.btnConnectTelnet.setFlat(False)
 
-        self.verticalLayout.addWidget(self.labelClient)
+        self.verticalLayout.addWidget(self.btnConnectTelnet)
 
-        self.teClient = QPlainTextEdit(Form)
-        self.teClient.setObjectName(u"teClient")
-        self.teClient.setEnabled(False)
-        self.teClient.setFrameShape(QFrame.Box)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout.addWidget(self.teClient)
+        self.verticalLayout.addItem(self.verticalSpacer)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -155,22 +144,21 @@ class Ui_Form(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout)
 
 
-        self.retranslateUi(Form)
+        self.retranslateUi(JuniorTcpServer)
 
-        QMetaObject.connectSlotsByName(Form)
+        QMetaObject.connectSlotsByName(JuniorTcpServer)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.labelLog.setText(QCoreApplication.translate("Form", u"results.log", None))
-        self.labelStdOut.setText(QCoreApplication.translate("Form", u"server stdout", None))
-        self.grpCustom.setTitle(QCoreApplication.translate("Form", u"Use custom server params", None))
-        self.linePort.setPlaceholderText(QCoreApplication.translate("Form", u"server port (:5000)", None))
+    def retranslateUi(self, JuniorTcpServer):
+        JuniorTcpServer.setWindowTitle(QCoreApplication.translate("JuniorTcpServer", u"Form", None))
+        self.labelLog.setText(QCoreApplication.translate("JuniorTcpServer", u"results.log", None))
+        self.labelStdOut.setText(QCoreApplication.translate("JuniorTcpServer", u"server stdout", None))
+        self.grpCustom.setTitle(QCoreApplication.translate("JuniorTcpServer", u"Use custom server params", None))
+        self.linePort.setPlaceholderText(QCoreApplication.translate("JuniorTcpServer", u"server port (:5000)", None))
         self.lineAddress.setInputMask("")
-        self.lineAddress.setPlaceholderText(QCoreApplication.translate("Form", u"server address (0.0.0.0)", None))
-        self.btnSrvStart.setText(QCoreApplication.translate("Form", u"Start server", None))
-        self.btnSrvStop.setText(QCoreApplication.translate("Form", u"Stop server", None))
-        self.btnClientConnect.setText(QCoreApplication.translate("Form", u"Connect client", None))
-        self.labelClient.setText(QCoreApplication.translate("Form", u"client input", None))
+        self.lineAddress.setPlaceholderText(QCoreApplication.translate("JuniorTcpServer", u"server address (0.0.0.0)", None))
+        self.btnSrvStart.setText(QCoreApplication.translate("JuniorTcpServer", u"Start server", None))
+        self.btnSrvStop.setText(QCoreApplication.translate("JuniorTcpServer", u"Stop server", None))
+        self.btnConnectTelnet.setText(QCoreApplication.translate("JuniorTcpServer", u"Connect telnet", None))
     # retranslateUi
 

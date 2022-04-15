@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>JuniorTcpServer</class>
+ <widget class="QWidget" name="JuniorTcpServer">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -103,6 +103,9 @@
          <property name="enabled">
           <bool>true</bool>
          </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="title">
           <string>Use custom server params</string>
          </property>
@@ -184,19 +187,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btnClientConnect">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Connect client</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="Line" name="line">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -204,40 +194,30 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="labelClient">
+        <widget class="QPushButton" name="btnConnectTelnet">
          <property name="enabled">
           <bool>false</bool>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>11</pointsize>
-           <bold>true</bold>
-           <kerning>true</kerning>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>true</bool>
-         </property>
          <property name="text">
-          <string>client input</string>
+          <string>Connect telnet</string>
          </property>
-         <property name="scaledContents">
+         <property name="flat">
           <bool>false</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="teClient">
-         <property name="enabled">
-          <bool>false</bool>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
          </property>
-        </widget>
+        </spacer>
        </item>
       </layout>
      </item>
