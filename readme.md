@@ -2,6 +2,9 @@
 #TODO: configure project by settings.json
 #TODO: configure .gitignore
 
+#TODO: make code more typed
+#TODO: make code more OOP like scoped and access modifiers
+
 Необходимо сделать tcp сервер, который распознаёт заданный формат данных и отображает его в требуемом формате.
 Обязательна запись данных во внешний файл.
 Интерфейс и способ отображения на выбор разработчика.
