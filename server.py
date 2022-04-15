@@ -18,6 +18,7 @@ class Server(socketserver.TCPServer):
         def finish(self):
             print('Client ' + self.client + ' disconnected\r\n'
                   'Waiting for new one...')
+            self.logFile.flush()
             self.logFile.close()
             
         def handle(self):
@@ -41,6 +42,7 @@ class Server(socketserver.TCPServer):
                 match = self.__pattern.search(record.decode('ascii'))
                 if match:
                     self.logger(match)
+            self.logFile.flush()
             self.__response = b''
             
         def logger(self, match):
@@ -71,7 +73,7 @@ def main():
         args.port = parser.get_default('port')
         print('Port number is low then 1000. You must be root for use it.\r\n'
               'Fallback to default ' + str(args.port))
-    if not re.match('\d{1-3}.\d{1-3}.\d{1-3}.\d{1-3}', args.address):
+    if None == re.match('\d{1-3}.\d{1-3}.\d{1-3}.\d{1-3}', args.address):
         args.address = parser.get_default('address')
         print('Address must be in format XXX.XXX.XXX.XXX, where X is digest from 0 to 9\r\n'
               'Fallback to default 0.0.0.0')
