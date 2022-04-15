@@ -1,3 +1,7 @@
+#TODO: disable visibility of some files? such as .workspace etc.
+#TODO: configure project by settings.json
+#TODO: configure .gitignore
+
 Необходимо сделать tcp сервер, который распознаёт заданный формат данных и отображает его в требуемом формате.
 Обязательна запись данных во внешний файл.
 Интерфейс и способ отображения на выбор разработчика.
