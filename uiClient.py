@@ -6,7 +6,8 @@ from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtCore import QProcess, QFile, QTextStream
 
 from uic.uiClient import Ui_Form
-from server import Server
+#TODO: change server instance from QProcess/server.py to QThread/Server::
+#from server import Server
 
 class MainWidget(QWidget):
     
@@ -61,8 +62,10 @@ class MainWidget(QWidget):
         self.srvIsCustom = on
     
     def slotStartSrv(self):
+        #FIXME: prevent server start with incorrect arguments through fallback them to defaults
         try:
             if self.srvIsCustom:
+            #FIXME: set default values lineAddress/linePort after clear fields
                 self.srvProcess.setArguments({'--address', self.ui.lineAddress.text()})
                 self.srvProcess.setArguments({'--port', self.ui.linePort.text.toint()})
             self.srvProcess.start()
@@ -74,7 +77,7 @@ class MainWidget(QWidget):
         self.srvToggle()
     
     def slotStopSrv(self):
-        #TODO: wait for srv process finishes correctly
+        #FIXME: wait for srv process finishes correctly
         self.srvProcess.terminate()
         self.srvToggle()
             

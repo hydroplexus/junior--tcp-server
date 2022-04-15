@@ -91,12 +91,13 @@ class Ui_Form(object):
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.linePort = QLineEdit(self.grpCustom)
         self.linePort.setObjectName(u"linePort")
+        self.linePort.setEnabled(True)
 
         self.gridLayout_2.addWidget(self.linePort, 1, 0, 1, 1)
 
         self.lineAddress = QLineEdit(self.grpCustom)
         self.lineAddress.setObjectName(u"lineAddress")
-        self.lineAddress.setEnabled(False)
+        self.lineAddress.setEnabled(True)
 
         self.gridLayout_2.addWidget(self.lineAddress, 0, 0, 1, 1)
 

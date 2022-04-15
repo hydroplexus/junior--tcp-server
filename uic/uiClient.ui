@@ -136,6 +136,9 @@
           </property>
           <item row="1" column="0">
            <widget class="QLineEdit" name="linePort">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="placeholderText">
              <string>server port (:5000)</string>
             </property>
@@ -144,7 +147,7 @@
           <item row="0" column="0">
            <widget class="QLineEdit" name="lineAddress">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="inputMask">
              <string/>

@@ -6,7 +6,7 @@ import socketserver
 import re
     
 class Server(socketserver.TCPServer):
-    
+#TODO: make server class more integrated to os    
     class HRecieve(socketserver.BaseRequestHandler):
         def setup(self):
             self.__pattern = re.compile(r'(?P<num>\d{4}) (?P<chn>C\d) (?P<at>\d{2}:\d{2}:\d{2}.\d)\d{2} (?P<grp>\d{2})$')
@@ -28,6 +28,7 @@ class Server(socketserver.TCPServer):
             while True:
                 data = self.request.recv(1024)
                 if not data: break
+                #FIXME: per character data recieving from windows telnet client 
                 #Эта странность от того, что клиент telnet на Windows отправляет символы по одному по мере набора
                 #махинации с его настройками не помогли
                 accum += data
