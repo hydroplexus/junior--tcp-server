@@ -62,7 +62,7 @@ class Server(socketserver.TCPServer):
 
 def setParser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--address', type=str, default='0.0.0.0')
+    parser.add_argument('-a', '--address', default='0.0.0.0')
     parser.add_argument('-p', '--port', type=int, default=5000)
     return parser
           
@@ -73,7 +73,7 @@ def main():
         args.port = parser.get_default('port')
         print('Port number is low then 1000. You must be root for use it.\r\n'
               'Fallback to default ' + str(args.port))
-    if None == re.match('\d{1-3}.\d{1-3}.\d{1-3}.\d{1-3}', args.address):
+    if not re.match('^(([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)\.){3}([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)$', args.address):
         args.address = parser.get_default('address')
         print('Address must be in format XXX.XXX.XXX.XXX, where X is digest from 0 to 9\r\n'
               'Fallback to default 0.0.0.0')
