@@ -10,36 +10,36 @@ from uic.uiClient import Ui_JuniorTcpServer
 #from server import Server
 
 class MainWidget(QWidget):
-    
+
     SRV_ADDRESS_DEFAULT = '0.0.0.0'
     SRV_PORT_DEFAULT = 5000
     LOG_FILE_NAME = './results.log'
     SRV_FILE_NAME = './server.py'
-    
+
     srvProcess = QProcess()
     srvAddress = ''
     srvPort = None
     srvIsCustom = False
     srvIsRunning = False
     logStream = QTextStream()
-    
+
     def __init__(self):
         super(MainWidget, self).__init__()
         self.ui = Ui_JuniorTcpServer()
         self.ui.setupUi(self)
         self.setUiLogic()
         self.setConnects()
-        
+
     def setUiLogic(self):
         logFile = QFile(self.LOG_FILE_NAME)
         logFile.open(QFile.ReadOnly)
         self.logStream.setDevice(logFile)
         self.updateLog()
         self.ui.grpCustom.setChecked(self.srvIsCustom)
-        
+
         self.srvProcess.setProgram('python3')
         self.srvProcess.setArguments({self.SRV_FILE_NAME})
-    
+
     def setConnects(self):
         self.ui.grpCustom.toggled.connect(self.slotCustomToggled)
         self.ui.btnSrvStart.clicked.connect(self.slotStartSrv)
@@ -49,22 +49,22 @@ class MainWidget(QWidget):
     def updateLog(self):
         while not self.logStream.atEnd():
             self.ui.teLog.appendPlainText(self.logStream.readLine())
-            
+
     def srvToggle(self):
         self.srvIsRunning = False if self.srvProcess.state() == 0 else True
         self.ui.grpCustom.setEnabled(not self.srvIsRunning)
         self.ui.btnSrvStop.setEnabled(self.srvIsRunning)
         self.ui.btnConnectTelnet.setEnabled(self.srvIsRunning)
         self.ui.btnSrvStart.setEnabled(not self.srvIsRunning)
-     
+
     def closeEvent(self, event):
         self.slotStopSrv()
         event.accept()
-                
+      
 #SLOTS
     def slotCustomToggled(self, on):
         self.srvIsCustom = on
-    
+
     def slotStartSrv(self):
         #FIXME: prevent server start with incorrect arguments through fallback them to defaults
         try:
@@ -78,15 +78,15 @@ class MainWidget(QWidget):
         finally:
             pass
         self.srvToggle()
-    
+
     def slotStopSrv(self):
         self.srvProcess.terminate()
         self.srvProcess.waitForFinished()
         self.srvToggle()
-    
+
     def slotConnectTelnet(self):
         pass       
-       
+
 def main():
     app = QApplication(sys.argv)
     widget = MainWidget()
