@@ -52,6 +52,8 @@ class Server(socketserver.TCPServer):
             self.logFile.write(match.group(0) + '\r\n')
             
     
+    
+    
     def __init__(self, host='0.0.0.0', port=5000):
         try:
             super().__init__((host, port), self.HRecieve)
