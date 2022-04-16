@@ -1,27 +1,28 @@
 #!/usr/bin/python
 
-from ctypes import addressof
-from logging import exception
 import sys
 import argparse
 import socketserver
 import re
-from tokenize import group
     
 #TODO: make server class more integrated to os
-class Server(socketserver):
+class Server(socketserver.TCPServer):
     #TODO: move Server::HRecieve to external file
     class HRecieve(socketserver.BaseRequestHandler):
-        def __init__(self, Server):
-            super().__init__()
-            self.setup=Server.setup
-            self.finish=Server.finish
-            self.handle=Server.handle
-            
-    
+        def __init__(self, request, client_address, server):
+            self.test = Server.test
+            self.test()
+            self.setup = Server.setup
+            self.finish = Server.finish
+            self.handle = Server.handle
+            super().__init__(request, client_address, server)
+
+
     def __init__(self, host, port):
         super().__init__((host, port), Server.HRecieve)
 
+    def test(): print(self)
+    
     def setup(self):
         self.__pattern = re.compile(r'(?P<num>\d{4}) (?P<chn>C\d) (?P<at>\d{2}:\d{2}:\d{2}.\d)\d{2} (?P<grp>\d{2})$')
         self.__response = b''
@@ -36,6 +37,7 @@ class Server(socketserver):
         self.logFile.close()
         
     def handle(self):
+        print('QQ')
         accum = b''
         print('Connected client from ' + self.client + '\r\n'
                 'Start recieving data...')
@@ -86,7 +88,7 @@ def main():
         server = Server(host, port)
         print('Server starts at {}:{}'.format(host, port))
         server.serve_forever()
-    except Exception as exeption:
+    except Exception as exception:
         print(exception)
     
 
