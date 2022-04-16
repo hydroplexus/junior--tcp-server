@@ -47,7 +47,7 @@
           <bool>true</bool>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Box</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -84,7 +84,7 @@
        <item>
         <widget class="QPlainTextEdit" name="teStdOut">
          <property name="frameShape">
-          <enum>QFrame::Box</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -102,9 +102,6 @@
         <widget class="QGroupBox" name="grpCustom">
          <property name="enabled">
           <bool>true</bool>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
          </property>
          <property name="title">
           <string>Use custom server params</string>
@@ -207,17 +204,23 @@
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+        <widget class="QPlainTextEdit" name="teUiLog">
+         <property name="autoFillBackground">
+          <bool>false</bool>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
-        </spacer>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="backgroundVisible">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

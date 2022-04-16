@@ -77,12 +77,11 @@ class MainWidget(QWidget):
             print(exception)
         finally:
             pass
-        
         self.srvToggle()
     
     def slotStopSrv(self):
-        #FIXME: wait for srv process finishes correctly
         self.srvProcess.terminate()
+        self.srvProcess.waitForFinished()
         self.srvToggle()
     
     def slotConnectTelnet(self):

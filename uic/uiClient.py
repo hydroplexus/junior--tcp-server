@@ -17,8 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QGroupBox,
     QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit,
-    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 
 class Ui_JuniorTcpServer(object):
     def setupUi(self, JuniorTcpServer):
@@ -47,7 +46,7 @@ class Ui_JuniorTcpServer(object):
         self.teLog = QPlainTextEdit(JuniorTcpServer)
         self.teLog.setObjectName(u"teLog")
         self.teLog.setEnabled(True)
-        self.teLog.setFrameShape(QFrame.Box)
+        self.teLog.setFrameShape(QFrame.NoFrame)
         self.teLog.setReadOnly(True)
 
         self.verticalLayout_3.addWidget(self.teLog)
@@ -68,7 +67,7 @@ class Ui_JuniorTcpServer(object):
 
         self.teStdOut = QPlainTextEdit(JuniorTcpServer)
         self.teStdOut.setObjectName(u"teStdOut")
-        self.teStdOut.setFrameShape(QFrame.Box)
+        self.teStdOut.setFrameShape(QFrame.NoFrame)
         self.teStdOut.setReadOnly(True)
 
         self.verticalLayout_2.addWidget(self.teStdOut)
@@ -82,7 +81,6 @@ class Ui_JuniorTcpServer(object):
         self.grpCustom = QGroupBox(JuniorTcpServer)
         self.grpCustom.setObjectName(u"grpCustom")
         self.grpCustom.setEnabled(True)
-        self.grpCustom.setStyleSheet(u"")
         self.grpCustom.setFlat(True)
         self.grpCustom.setCheckable(True)
         self.grpCustom.setChecked(False)
@@ -133,9 +131,15 @@ class Ui_JuniorTcpServer(object):
 
         self.verticalLayout.addWidget(self.btnConnectTelnet)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.teUiLog = QPlainTextEdit(JuniorTcpServer)
+        self.teUiLog.setObjectName(u"teUiLog")
+        self.teUiLog.setAutoFillBackground(False)
+        self.teUiLog.setFrameShape(QFrame.NoFrame)
+        self.teUiLog.setFrameShadow(QFrame.Sunken)
+        self.teUiLog.setReadOnly(True)
+        self.teUiLog.setBackgroundVisible(True)
 
-        self.verticalLayout.addItem(self.verticalSpacer)
+        self.verticalLayout.addWidget(self.teUiLog)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout)
