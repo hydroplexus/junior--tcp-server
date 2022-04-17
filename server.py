@@ -1,87 +1,124 @@
 #!/usr/bin/python
 
+from socket import gaierror
 import sys
+import os
 import argparse
 import socketserver
 import re
     
 #TODO: make server class more integrated to os
-class Server(socketserver.TCPServer):
+class JServer(socketserver.TCPServer):
     #TODO: move Server::HRecieve to external file
-    class HRecieve(socketserver.BaseRequestHandler):
-        def setup(self):
-            self.__pattern = re.compile(r'(?P<num>\d{4}) (?P<chn>C\d) (?P<at>\d{2}:\d{2}:\d{2}.\d)\d{2} (?P<grp>\d{2})$')
-            self.__response = b''
-            self.client = self.client_address[0] + ':' + str(self.client_address[1])
-            logName = './results.log'
-            self.logFile = open(logName, 'a')
+    class HRecieve(socketserver.StreamRequestHandler):
+        __client :str
+        
+        def setup(self) -> None:
+            super().setup()
         
         def finish(self):
-            print('Client ' + self.client + ' disconnected\r\n'
-                  'Waiting for new one...')
-            self.logFile.flush()
-            self.logFile.close()
+            self.server.connectLose(self.client)
             
-        def handle(self):
-            accum = b''
-            print('Connected client from ' + self.client + '\r\n'
-                  'Start recieving data...')
+        def handle(self) -> None:
+            self.client = '{}:{}'.format(self.client_address[0], self.client_address[1])
+            print('Connected client from {}\r\n'\
+                'Start recieving data...'\
+                .format(self.client))
             while True:
-                data = self.request.recv(1024)
+                data = self.rfile.readline(1024)
                 if not data: break
-                #FIXME: strange with per character data recieving from windows telnet client 
-                accum += data
-                if accum.find(b'\r'):
-                    self.__response += accum
-                    accum = b''
-                    self.check()
-                    
-        def check(self):
-            list = self.__response.split(b'\r')
-            for record in list:
-                match = self.__pattern.search(record.decode('ascii'))
-                if match:
-                    self.logger(match)
-            self.logFile.flush()
-            self.__response = b''
-            
-        def logger(self, match):
-            if match.group('grp') == '00':
-                confirm = 'Спортсмен, нагрудный номер ' + match.group('num') + ' прошёл отсечку ' + match.group('chn') + ' в "' + match.group('at') + '"'
-                print(confirm)
-            self.logFile.write(match.group(0) + '\r\n')
-            
+                self.server.check(data)
+                
+    class JServerError(Exception): pass
+        
+    __LOG_FILE = './results.log'
+    __LOG_FLUSH_MAX = 7
+    __RGX_IPV4 = '^(([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)\.){3}([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)$'
+    __RGX_CHECK = r'\d{4} C\d \d{2}:\d{2}:\d{2}.\d{3} \d{2}$'
+    __RGX_CATCH = r'(\d{4}) (C\d) (\d{2}:\d{2}:\d{2}.\d)\d{2} (00)$'
     
+    __host: str
+    __port: int
+    __logBuffer = list()
+    __rgxIPv4 = re.compile(__RGX_IPV4)
+    __rgxCheck = re.compile(__RGX_CHECK)
+    __rgxCatch = re.compile(__RGX_CATCH)
     
-    
-    def __init__(self, host='0.0.0.0', port=5000):
+    def __init__(self, host: str, port: int):
+        self.__host = host
+        self.__port = port
         try:
             super().__init__((host, port), self.HRecieve)
-        except Exception as exception:
-            print(exception)
-        finally:
-            print('Server succesfully started at {}:{}'.format(host, port))
-
-def setParser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--address', default='0.0.0.0')
-    parser.add_argument('-p', '--port', type=int, default=5000)
-    return parser
-          
-def main():
-    parser = setParser()
-    args = parser.parse_args(sys.argv[1:])
-    if args.port < 1000:
-        args.port = parser.get_default('port')
-        print('Port number is low then 1000. You must be root for use it.\r\n'
-              'Fallback to default ' + str(args.port))
-    if not re.match('^(([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)\.){3}([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)$', args.address):
-        args.address = parser.get_default('address')
-        print('Address must be in format X.X.X.X, where X must be in range 0..255\r\n'
-              'Fallback to default 0.0.0.0')
-    server = Server(args.address, args.port)
-    server.serve_forever()
-     
+        except OverflowError as ex:
+            raise self.JServerError('Port not in range 0-65535')
+        except gaierror as ex:
+            raise self.JServerError('Unable to recognize host address')
+        except PermissionError as ex:
+            raise self.JServerError('Access to ports in range 0-1000 granted root only')
+        except OSError as ex:
+            raise self.JServerError('Address alredy in use')
+        except Exception as ex:
+            raise ex
         
+        print('Server started at {}:{}\r\n'\
+            'Waiting for clients...'\
+            .format(host, port))
+            
+    def check(self, data :bytes) -> None:
+            list = data.split(b'\r')
+            for record in list:
+                check = self.__rgxCheck.search(record.decode('ascii'))
+                if check:
+                    self.logger(check.group(0))
+                    self.catch(check.group(0))
+            
+    def catch(self, match: str) -> None:
+        catch = self.__rgxCatch.match(match)
+        if catch:
+            print('Спортсмен, нагрудный номер {}, прошёл отсечку {} в "{}"'\
+                .format(catch.group(1), catch.group(2), catch.group(3)))
+    
+    def logger(self, match: str) -> None:
+        self.__logBuffer.append('{}\r\n'.format(match))
+        if self.__logBuffer.__len__() >= self.__LOG_FLUSH_MAX:
+            self.flushLog()
+            
+    def flushLog(self) -> None:
+        logFile = open(self.__LOG_FILE, 'a')
+        for record in self.__logBuffer:
+            logFile.write(record)
+        self.__logBuffer.clear()
+        logFile.flush()
+        os.fsync(logFile.fileno())
+        logFile.close()
+            
+    def connectLose(self, client: str) -> None:
+        self.flushLog()
+        print('\rClient {} disconnected\r\n'\
+            'Waiting for new one...'\
+            .format(client))
+#HELPERS:
+    
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-a', '--host', type=str, default='0.0.0.0')
+    parser.add_argument('-p', '--port', type=int)
+    #parser.add_argument('-h', '--help')
+    
+    args = parser.parse_args(sys.argv[1:])
+    host = args.host
+    port = args.port
+    try:
+        server = JServer()
+    except Exception as ex:
+        print(ex)
+        sys.exit('Module stopped by internal error')
+
+    server.serve_forever()
+    
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('\rModule stopped by KeyboardInterrupt')
