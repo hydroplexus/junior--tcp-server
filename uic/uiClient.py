@@ -54,6 +54,21 @@ class Ui_JuniorTcpServer(object):
 
         self.horizontalLayout.addLayout(self.verticalLayout_3)
 
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.label = QLabel(JuniorTcpServer)
+        self.label.setObjectName(u"label")
+
+        self.verticalLayout_4.addWidget(self.label)
+
+        self.plainTextEdit = QPlainTextEdit(JuniorTcpServer)
+        self.plainTextEdit.setObjectName(u"plainTextEdit")
+
+        self.verticalLayout_4.addWidget(self.plainTextEdit)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout_4)
+
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.labelStdOut = QLabel(JuniorTcpServer)
@@ -91,13 +106,13 @@ class Ui_JuniorTcpServer(object):
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.linePort = QLineEdit(self.grpCustom)
         self.linePort.setObjectName(u"linePort")
-        self.linePort.setEnabled(True)
+        self.linePort.setEnabled(False)
 
         self.gridLayout_2.addWidget(self.linePort, 1, 0, 1, 1)
 
         self.lineAddress = QLineEdit(self.grpCustom)
         self.lineAddress.setObjectName(u"lineAddress")
-        self.lineAddress.setEnabled(True)
+        self.lineAddress.setEnabled(False)
 
         self.gridLayout_2.addWidget(self.lineAddress, 0, 0, 1, 1)
 
@@ -156,6 +171,7 @@ class Ui_JuniorTcpServer(object):
     def retranslateUi(self, JuniorTcpServer):
         JuniorTcpServer.setWindowTitle(QCoreApplication.translate("JuniorTcpServer", u"Form", None))
         self.labelLog.setText(QCoreApplication.translate("JuniorTcpServer", u"results.log", None))
+        self.label.setText(QCoreApplication.translate("JuniorTcpServer", u"TextLabel", None))
         self.labelStdOut.setText(QCoreApplication.translate("JuniorTcpServer", u"server stdout", None))
         self.grpCustom.setTitle(QCoreApplication.translate("JuniorTcpServer", u"Use custom server params", None))
         self.linePort.setPlaceholderText(QCoreApplication.translate("JuniorTcpServer", u"server port (:5000)", None))

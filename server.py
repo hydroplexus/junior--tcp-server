@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from socket import gaierror
+import subprocess
 import sys
 import os
 import argparse
@@ -30,19 +31,36 @@ class JServer(socketserver.TCPServer):
                 self.server.check(data)
                 
     class JServerError(Exception): pass
+    
+    class HJServerBridge():
+        def __init__() -> None:
+            pass
         
-    __LOG_FILE = './results.log'
-    __LOG_FLUSH_MAX = 7
+        @classmethod
+        def onMatch(self, data: str) -> None:
+            pass
+        
+        @classmethod
+        def onCatch(self, data: str) -> None:
+            pass
+        
+        def onLogFlush(self) -> None:
+            pass
+        
     __RGX_IPV4 = '^(([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)\.){3}([1-9]?\d|1\d\d|2[0-5][0-5]|2[0-4]\d)$'
     __RGX_CHECK = r'\d{4} C\d \d{2}:\d{2}:\d{2}.\d{3} \d{2}$'
     __RGX_CATCH = r'(\d{4}) (C\d) (\d{2}:\d{2}:\d{2}.\d)\d{2} (00)$'
     
     __host: str
     __port: int
+    __logFileName = './results.log'
+    __logFlushMax = 7
     __logBuffer = list()
     __rgxIPv4 = re.compile(__RGX_IPV4)
     __rgxCheck = re.compile(__RGX_CHECK)
     __rgxCatch = re.compile(__RGX_CATCH)
+    __isBridged = False
+    __hBridge: HJServerBridge = None
     
     def __init__(self, host: str, port: int):
         self.__host = host
@@ -75,42 +93,41 @@ class JServer(socketserver.TCPServer):
     def catch(self, match: str) -> None:
         catch = self.__rgxCatch.match(match)
         if catch:
-            print('Спортсмен, нагрудный номер {}, прошёл отсечку {} в "{}"'\
-                .format(catch.group(1), catch.group(2), catch.group(3)))
+            data = 'Спортсмен, нагрудный номер {}, прошёл отсечку {} в "{}"'\
+                .format(catch.group(1), catch.group(2), catch.group(3))
+            print(data)
+            self.__hBridge.onCatch(data)
     
     def logger(self, match: str) -> None:
         self.__logBuffer.append('{}\r\n'.format(match))
-        if self.__logBuffer.__len__() >= self.__LOG_FLUSH_MAX:
+        if self.__logBuffer.__len__() >= self.__logFlushMax:
             self.flushLog()
             
     def flushLog(self) -> None:
-        logFile = open(self.__LOG_FILE, 'a')
-        for record in self.__logBuffer:
-            logFile.write(record)
+        with open(self.__logFileName, 'a') as file:
+            file.writelines('%s' % record for record in self.__logBuffer)
         self.__logBuffer.clear()
-        logFile.flush()
-        os.fsync(logFile.fileno())
-        logFile.close()
             
     def connectLose(self, client: str) -> None:
         self.flushLog()
         print('\rClient {} disconnected\r\n'\
             'Waiting for new one...'\
             .format(client))
-#HELPERS:
     
+    def setBridge(self, bridge: HJServerBridge) -> None:
+        self.__hBridge = bridge
+        self.__isBridged = True
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--host', type=str, default='0.0.0.0')
     parser.add_argument('-p', '--port', type=int)
-    #parser.add_argument('-h', '--help')
     
     args = parser.parse_args(sys.argv[1:])
     host = args.host
     port = args.port
     try:
-        server = JServer()
+        server = JServer(host, port)
     except Exception as ex:
         print(ex)
         sys.exit('Module stopped by internal error')

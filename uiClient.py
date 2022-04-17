@@ -2,26 +2,47 @@
 
 import sys
 
+from PySide6 import QtCore
 from PySide6.QtWidgets import QApplication, QWidget
-from PySide6.QtCore import QProcess, QFile, QTextStream
+from PySide6.QtCore import QObject, QProcess, QFile, QTextStream
 
+from server import JServer
 from uic.uiClient import Ui_JuniorTcpServer
 #TODO: change server instance from QProcess/server.py to QThread/Server::
 #from server import Server
 
 class MainWidget(QWidget):
-    
+    class HBridge(JServer.HJServerBridge, QObject):
+        #SIGNALS
+        onMatchSignal = QtCore.Signal(str)
+        onCatchSignal = QtCore.Signal(str)
+        
+        def __init__(self, parent) -> None:
+            super(QObject).__init__(parent)
+            
+        @classmethod
+        def onMatch(self, data: str) -> None:
+            self.onMatch.emit(data)
+            
+        @classmethod
+        def onCatch(self, data: str) -> None:
+            self.onCatch.emit(data)
+        
     SRV_ADDRESS_DEFAULT = '0.0.0.0'
     SRV_PORT_DEFAULT = 5000
     LOG_FILE_NAME = './results.log'
     SRV_FILE_NAME = './server.py'
     
+    srv: JServer
     srvProcess = QProcess()
     srvAddress = ''
     srvPort = None
     srvIsCustom = False
     srvIsRunning = False
     logStream = QTextStream()
+    
+    #SIGNALS
+    
     
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -41,6 +62,8 @@ class MainWidget(QWidget):
         self.srvProcess.setArguments({self.SRV_FILE_NAME})
     
     def setConnects(self):
+        self.HBridge.onMatchSignal.connect(self.onMatchSlot)
+        self.HBridge.onMatchSignal.connect(self.onCatchSlot)
         self.ui.grpCustom.toggled.connect(self.slotCustomToggled)
         self.ui.btnSrvStart.clicked.connect(self.slotStartSrv)
         self.ui.btnSrvStop.clicked.connect(self.slotStopSrv)
@@ -85,7 +108,13 @@ class MainWidget(QWidget):
         self.srvToggle()
     
     def slotConnectTelnet(self):
-        pass       
+        pass  
+    
+    def onMatcSlot(self, data:str) -> None:
+        print('MATCHED')
+    
+    def onCatchSlot(self, data:str) -> None:
+        print('CATCHED')
        
 def main():
     app = QApplication(sys.argv)
