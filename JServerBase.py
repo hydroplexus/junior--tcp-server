@@ -10,13 +10,17 @@ class JServerBase(socketserver.TCPServer):
     class HRecieve(socketserver.TCPServer):
         def setup(self) -> None:
            super().setup()
+           
         def finish(self) -> None: ...
+        
         def handle(self) -> None:
             while True:
                 data = self.rfile.readline(1024)
-                if not data break
+                if not data: break
         
     def __init__(self, interface: str, port: int) -> None:
+        self.__interface = interface
+        self.__port = port
         try:
             super().__init__((interface, port), self.HRecieve)
         except PermissionError as ex:
@@ -25,8 +29,17 @@ class JServerBase(socketserver.TCPServer):
             pass
         except Exception as ex:
             raise ex
-        self.__interface = interface
-        self.__port = port
         self.__setup()
         
-    def __setup(self) -> None: ...
+    def __setup(self) -> None:
+        #vars
+        self.__address: str
+        self.__port: int
+        #queues and workers
+        self.__qRawData = queues.Queue()
+        self.__qMatchedData = queues.Queue()
+        self.__wRDMatcher()
+        self.__wMDChecker()
+        
+    def start() ...
+    def setLogFile()
