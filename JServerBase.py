@@ -2,8 +2,8 @@
 
 import sys
 import logging
+import socketserver
 from multiprocessing import queues
-from socket import socketserver
 
 class JServerBase(socketserver.TCPServer):
     class JServerError(Exception): ...
