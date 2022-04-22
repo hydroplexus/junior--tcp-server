@@ -8,8 +8,14 @@ from multiprocessing import queues
 class JServerBase(socketserver.TCPServer):
     class JServerError(Exception): ...
     class HRecieve(socketserver.TCPServer):
+        def __init__(self, server, *args, **kwargs) -> None:
+            super().__init__(*args, **kwargs)
+            self.__counter: int
+            self.__server = server
+            
         def setup(self) -> None:
            super().setup()
+           self.__counter =  0
            
         def finish(self) -> None: ...
         
@@ -17,16 +23,16 @@ class JServerBase(socketserver.TCPServer):
             while True:
                 data = self.rfile.readline(1024)
                 if not data: break
+                self.__counter += 1
+                ...
         
     def __init__(self, interface: str, port: int) -> None:
         self.__interface = interface
         self.__port = port
         try:
             super().__init__((interface, port), self.HRecieve)
-        except PermissionError as ex:
-            pass
-        except OSError as ex:
-            pass
+        except PermissionError as ex: ...
+        except OSError as ex: ...
         except Exception as ex:
             raise ex
         self.__setup()
