@@ -2,6 +2,8 @@
 import socketserver
 import threading
 
+import JMessage
+
 class JServer:
     class JServerError(Exception):
         __types = {
