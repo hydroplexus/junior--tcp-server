@@ -17,7 +17,7 @@ class JMessage(metaclass = JMessageMeta):
         timestamp: datetime.timestamp
         client: int
         raw: bytes
-        
+    
     sig = None
     rcvQueue: None
     
@@ -27,10 +27,10 @@ class JMessage(metaclass = JMessageMeta):
         self.message.timestamp = datetime.timestamp()
         self.message.client = client
         self.message.raw = self.__class__.sig + self.raw
-        
+    
     def spool(self) -> None:
         self.__class__.rcvQueue.put(self.message.timestamp, self.message)
-        
+    
     def worker(self) -> None: ...
 
 class MsgRaw(JMessage):

@@ -4,8 +4,8 @@ import threading
 
 import JMessage
 
-class JQueue(asyncio.PriorityQueue):        
-    @classmethod        
+class JQueue(asyncio.PriorityQueue):
+    @classmethod
     def getSubclasses(cls) -> map:
         list = cls.__subclasses__()
         return {sub.__name__ : sub for sub in list}
@@ -16,7 +16,7 @@ class JQueue(asyncio.PriorityQueue):
         self.pollPeriod = 5
         self.workers = []
         self.addWorkers(self.wrksTreshold)
-        
+    
     async def checkWorkload(self) -> None:
         treshold = (self.qsize // self.msgsTreshold * self.wrksTreshold)
         if treshold > self.workers.count():
@@ -28,13 +28,13 @@ class JQueue(asyncio.PriorityQueue):
     async def addWorkers(self, treshold) -> None:
         for _ in range(self.workers.count(), treshold - 1):
             await self.workers.append(asyncio.create_task(self.worker(self)))
-            
+    
     async def delWorkers(self, treshold):
         for _ in range(treshold + 1, self.workers.count()):
             await self.put((0, 'kill'))
-        
+    
     async def worker(self) -> None: ...
-            
+
 class QueRaw(JQueue):
     async def worker(self):
         while True:

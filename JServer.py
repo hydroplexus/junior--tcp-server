@@ -17,18 +17,16 @@ class JServer:
         
         def __init__(self, errNum: int) -> None:
             self.__errNum = errNum
-            
+        
         def __str__(self) -> str:
             return type(self).__types(self.__errNum)
-        
+    
     class HRecieve(socketserver.StreamRequestHandler):
         def setup(self) -> None:
             super().setup()
-            ...
-            
-        def finish(self) -> None:
-            ...
-            
+        
+        def finish(self) -> None: ...
+        
         async def handle(self) -> None:
             while True:
                 raw = self.rfile.readline(1024)
@@ -48,9 +46,8 @@ class JServer:
    
     def start(self) -> None:
         self.__thrSrv.start()
-        
+    
     def stop(self) -> None:
         self.__srv.finish()
         self.__thrSrv.stop()
         self.__rawSpooler.join()
-        
