@@ -31,8 +31,7 @@ class JMessage(metaclass = JMessageMeta):
     def spool(self) -> None:
         self.__class__.rcvQueue.put(self.message.timestamp, self.message)
         
-    def worker(self) -> None:
-        ...
+    def worker(self) -> None: ...
 
 class MsgRaw(JMessage):
     sig = b''
