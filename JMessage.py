@@ -5,13 +5,9 @@ import regex
 import JServer
 import JQueue
 
-class JMessageMeta():
-    def __init__(cls, name, bases, namespace) -> None:
-        super(JServer.JMessageMeta, cls).__init__(name, bases, namespace)
-        
-        #cls.rcvQueue = 
+class JMessageMetaSingle(): ...
 
-class JMessage(metaclass = JMessageMeta):
+class JMessage(metaclass = JMessageMetaSingle):
     class Message:
         datetime: datetime.datetime
         timestamp: datetime.timestamp
@@ -35,7 +31,7 @@ class JMessage(metaclass = JMessageMeta):
 
 class MsgRaw(JMessage):
     sig = b''
-    rcvQueue = 'queRaw'
+    rcvQueue = JQueue.QueRaw()
     
     @staticmethod
     def check(raw) -> None: ... 
